@@ -110,8 +110,90 @@ public class Algorithm {
         return data[a.length][b.length];
     }
 
+    /**
+     * 快速排序
+     * @param array
+     */
+    public static void quickSort(int[] array, int low, int high) {
+        int l = low;
+        int h = high;
+        int p = array[low];
+        if (low >= high) return;
+        while (l < h) {
+            while (l < h && array[h] >= p)
+                h--;
+            while (l < h && array[l] <= p)
+                l++;
+            if (l < h) {
+                int temp = array[h];
+                array[h] = array[l];
+                array[l] = temp;
+            }
+        }
+        array[low] = array[h];
+        array[h] = p;
+        if (h > 0) {
+            quickSort(array, low, h - 1);
+        }
+        if (h < array.length - 1) {
+            quickSort(array, h + 1, high);
+        }
+    }
+
+
+    public static int  selectMidOfThree(int[] array,int low,int high){
+        int mid=(low+high)/2;
+        if (array[mid]>array[high]){
+            int temp = array[high];
+            array[high] = array[mid];
+            array[mid] = temp;
+        }
+        if (array[low]>array[high]){
+            int temp = array[high];
+            array[high] = array[low];
+            array[low] = temp;
+        }
+        if (array[mid]>array[low]){
+            int temp = array[low];
+            array[low] = array[mid];
+            array[mid] = temp;
+        }
+        return array[low];
+    }
+    public static void  optimizedQuickSort(int[] array,int low,int high){
+        int l = low;
+        int h = high;
+        int p = selectMidOfThree(array,low,high);
+        if (high - low + 1 < 10){
+
+        }
+        while (l < h) {
+            while (l < h && array[h] >= p)
+                h--;
+            while (l < h && array[l] <= p)
+                l++;
+            if (l < h) {
+                int temp = array[h];
+                array[h] = array[l];
+                array[l] = temp;
+            }
+        }
+        array[low] = array[h];
+        array[h] = p;
+        if (h > 0) {
+            quickSort(array, low, h - 1);
+        }
+        if (h < array.length - 1) {
+            quickSort(array, h + 1, high);
+        }
+    }
+
+
     public static void main(String[] args) {
         Algorithm algorithm = new Algorithm();
-        System.out.print(algorithm.back(new int[]{1, 2, 3}, new int[]{1, 2, 3}, 6));
+        int[] a = {9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
+        algorithm.quickSort(a, 0, a.length - 1);
+        for (int i=0;i<a.length;i++)
+            System.out.print(a[i]);
     }
 }
