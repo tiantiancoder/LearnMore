@@ -6,6 +6,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.RecursiveTask;
 
 /**
+ * fork/join框架
  * Created by wangtian9 on 2017/8/8.
  */
 public class CountTask extends RecursiveTask<Integer> {

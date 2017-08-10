@@ -112,6 +112,7 @@ public class Algorithm {
 
     /**
      * 快速排序
+     *
      * @param array
      */
     public static void quickSort(int[] array, int low, int high) {
@@ -141,32 +142,34 @@ public class Algorithm {
     }
 
 
-    public static int  selectMidOfThree(int[] array,int low,int high){
-        int mid=(low+high)/2;
-        if (array[mid]>array[high]){
+    public static int selectMidOfThree(int[] array, int low, int high) {
+        int mid = (low + high) / 2;
+        if (array[mid] > array[high]) {
             int temp = array[high];
             array[high] = array[mid];
             array[mid] = temp;
         }
-        if (array[low]>array[high]){
+        if (array[low] > array[high]) {
             int temp = array[high];
             array[high] = array[low];
             array[low] = temp;
         }
-        if (array[mid]>array[low]){
+        if (array[mid] > array[low]) {
             int temp = array[low];
             array[low] = array[mid];
             array[mid] = temp;
         }
         return array[low];
     }
-    public static void  optimizedQuickSort(int[] array,int low,int high){
+
+    public static void optimizedQuickSort(int[] array, int low, int high) {
+        if (high - low + 1 < 10) {
+            insertSort(array);
+            return;
+        }
         int l = low;
         int h = high;
-        int p = selectMidOfThree(array,low,high);
-        if (high - low + 1 < 10){
-
-        }
+        int p = selectMidOfThree(array, low, high);
         while (l < h) {
             while (l < h && array[h] >= p)
                 h--;
@@ -188,12 +191,97 @@ public class Algorithm {
         }
     }
 
+    /**
+     * 插入排序
+     *
+     * @param array
+     */
+    public static void insertSort(int[] array) {
+        for (int i = 1; i < array.length; i++) {
+            int item = array[i];
+            int index = i - 1;
+            while (index >= 0 && item < array[index]) {
+                array[index + 1] = array[index];
+                index--;
+            }
+            if (index < 0) {
+                array[0] = item;
+            } else {
+                array[index] = item;
+            }
+        }
+    }
+
+    /**
+     * 冒泡排序
+     *
+     * @param array
+     */
+    public static void bubble(int[] array) {
+        int bound = array.length;
+        while (bound > 0) {
+            int t = 0;
+            for (int i = 1; i < bound; i++) {
+                if (array[i] < array[i - 1]) {
+                    int item = array[i];
+                    array[i] = array[i - 1];
+                    array[i - 1] = item;
+                    t = i;
+                }
+            }
+            bound = t;
+        }
+    }
+
+    /**
+     * 选择排序
+     *
+     * @param array
+     */
+    public static void selectSort(int[] array) {
+        for (int i = array.length - 1; i > 0; i--) {
+            int t = 0;
+            for (int j = 1; j <= i; j++) {
+                if (array[t] < array[j]) {
+                    t = j;
+                }
+            }
+            int item = array[t];
+            array[t] = array[i];
+            array[i] = item;
+        }
+    }
+
+    /**
+     * 希尔排序，gap为增量，分组
+     * @param array
+     */
+    public static void shellSort(int[] array) {
+        int gap = array.length;
+        while (gap > 1) {
+            gap = (gap + 1) / 2;
+            for (int i = 0; i <= gap; i++) {
+                for (int j = i + gap; j < array.length; j = j + gap) {
+                    int item = array[j];
+                    while (j > i && array[j] < array[j - gap]) {
+                        array[j] = array[j - gap];
+                        j = j - gap;
+                    }
+                    if (j <= i) {
+                        array[i] = item;
+                    } else {
+                        array[j] = item;
+                    }
+                }
+            }
+        }
+    }
 
     public static void main(String[] args) {
         Algorithm algorithm = new Algorithm();
         int[] a = {9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
-        algorithm.quickSort(a, 0, a.length - 1);
-        for (int i=0;i<a.length;i++)
+        algorithm.shellSort(a);
+        for (int i = 0; i < a.length; i++)
             System.out.print(a[i]);
     }
 }
