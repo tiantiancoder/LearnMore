@@ -254,6 +254,7 @@ public class Algorithm {
 
     /**
      * 希尔排序，gap为增量，分组
+     *
      * @param array
      */
     public static void shellSort(int[] array) {
@@ -277,10 +278,103 @@ public class Algorithm {
         }
     }
 
+    public static void merge(int[] sourceArray, int[] sortArray, int start, int bound, int end) {
+        int index1 = start, index2 = bound + 1, index = start;
+        while (index1 <= bound && index2 < end) {
+            while (index1 <= bound && sourceArray[index1] <= sourceArray[index2]) {
+                sortArray[index] = sourceArray[index1];
+                index1++;
+                index++;
+            }
+            while (index2 < end && sourceArray[index1] > sourceArray[index2]) {
+                sortArray[index] = sourceArray[index2];
+                index2++;
+                index++;
+            }
+        }
+        if (index1 <= bound) {
+            for (int i = index1; i <= bound; i++) {
+                sortArray[index] = sourceArray[i];
+                index++;
+            }
+        } else {
+            for (int i = index2; i < end; i++) {
+                sortArray[index] = sourceArray[i];
+                index++;
+            }
+        }
+    }
+
+    public static void mergePass(int[] sourceArray, int[] sortArray, int subLength) {
+        int i = 0;
+        for (i = 0; i <= sourceArray.length - 2 * subLength; i = i + 2 * subLength) {
+            merge(sourceArray, sortArray, i, i + subLength - 1, i + 2 * subLength);
+        }
+        if (i + subLength < sourceArray.length) {
+            merge(sourceArray, sortArray, i, i + subLength - 1, sourceArray.length);
+        } else {
+            for (int j = i; j < sourceArray.length; j++) {
+                sortArray[j] = sourceArray[j];
+            }
+        }
+    }
+
+    /**
+     * 归并排序
+     *
+     * @param array
+     */
+    public static void mergeSort(int[] array) {
+        int[] sortArray = new int[array.length];
+        for (int i = 1; i < array.length; i = i * 2) {
+            mergePass(array, sortArray, i);
+            i = i * 2;
+            mergePass(sortArray, array, i);
+        }
+    }
+
+    public static void restore(int[] array, int root, int end) {
+        int j = root;
+        int m;
+        while (j <= end / 2 - 1) {
+            if (j * 2 + 2 < end && array[j * 2 + 1] < array[j * 2 + 2]) {
+                m = j * 2 + 2;
+            } else {
+                m = j * 2 + 1;
+            }
+            if (array[m] > array[j]) {
+                int temp = array[m];
+                array[m] = array[j];
+                array[j] = temp;
+                j = m;
+            } else {
+                j = end;
+            }
+        }
+    }
+
+    /**
+     * 堆排序
+     *
+     * @param array
+     */
+    public static void heapSort(int[] array) {
+        for (int i = array.length / 2 - 1; i >= 0; i--) {
+            restore(array, i, array.length);
+        }
+        for (int j = array.length - 1; j > 0; j--) {
+            int temp = array[0];
+            array[0] = array[j];
+            array[j] = temp;
+            restore(array, 0, j - 1);
+        }
+    }
+
+
     public static void main(String[] args) {
         Algorithm algorithm = new Algorithm();
         int[] a = {9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
-        algorithm.shellSort(a);
+        algorithm.heapSort(a);
         for (int i = 0; i < a.length; i++)
             System.out.print(a[i]);
     }
