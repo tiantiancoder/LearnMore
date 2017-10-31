@@ -102,8 +102,7 @@ public class BinTree {
 		}
 	}
 	/**
-	 * �ȸ�����
-	 * @param t
+	 *
 	 */
 	public void preOrder(BinTreeNode t){
 		if(t!=null){
@@ -113,8 +112,7 @@ public class BinTree {
 		}
 	}
 	/**
-	 * �ǵݹ��ȸ�����
-	 * @param t ���ڵ�
+	 *
 	 */
 	public void NorecPreOrder(BinTreeNode t){
 		if(t==null){
@@ -144,8 +142,7 @@ public class BinTree {
 		}
 	}
 	/**
-	 * �ǵݹ��и�����
-	 * @param t ���ڵ�
+	 *
 	 */
 	public void norecInOrder(BinTreeNode t){
 		if (t==null){
@@ -165,8 +162,7 @@ public class BinTree {
 		}
 	}
 	/**
-	 * �������
-	 * @param t
+	 *
 	 */
 	public void postOrder(BinTreeNode t){
 		if(t!=null){
@@ -176,8 +172,7 @@ public class BinTree {
 		}
 	}
 	/**
-	 * �ǵݹ�������
-	 * @param t ���ڵ�
+	 *
 	 */
 	public void norecPostOrder(BinTreeNode t){
 		if(t==null)return;
@@ -211,10 +206,7 @@ public class BinTree {
 			}
 		}
 	}
-	/**
-	 * ��α���
-	 * @param t ���ڵ�
-	 */
+
 	public void levelOrder(BinTreeNode t){
 		if(t==null){
 			return ;

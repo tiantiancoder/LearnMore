@@ -1,5 +1,7 @@
 package algorithm;
 
+import java.util.*;
+
 /**
  * Created by wangtian9 on 2017/7/17.
  */
@@ -370,6 +372,96 @@ public class Algorithm {
         }
     }
 
+    public static List<String> inToPostOrder(String inOrder) {
+        char[] order = inOrder.toCharArray();
+        ArrayList<String> in = new ArrayList<>();
+        ArrayList<String> post = new ArrayList<>();
+        ArrayDeque<String> stack = new ArrayDeque<>();
+        int index = 0;
+        int digitBegin = 0;
+        while (index < order.length) {
+            if (Character.isDigit(order[index])) {
+                if (digitBegin == -1) {
+                    digitBegin = index;
+                }
+            } else {
+                if (digitBegin != -1) {
+                    in.add(inOrder.substring(digitBegin, index));
+                    in.add(inOrder.substring(index, index + 1));
+                    digitBegin = -1;
+                } else {
+                    in.add(inOrder.substring(index, index + 1));
+                }
+            }
+            index++;
+        }
+        if (digitBegin != -1) {
+            in.add(inOrder.substring(digitBegin));
+        }
+        System.out.print(in);
+        Map<String,Integer> prior=new HashMap<>();
+        prior.put("+",1);
+        prior.put("-",1);
+        prior.put("*",2);
+        prior.put("/",2);
+        prior.put("(",0);
+
+        for(int i=0;i<in.size();i++){
+            switch (in.get(i)){
+                case "+":case "-":
+                case "*":case "/":
+                    while ((!stack.isEmpty())&&(prior.get(stack.peek())>=prior.get(in.get(i)))){
+                        post.add(stack.pop());
+                    }
+                    stack.push(in.get(i));
+                    break;
+                case ")":
+                    while ((!stack.isEmpty())&&(!"(".equals(stack.peek()))){
+                        post.add(stack.pop());
+                    }
+                    stack.pop();
+                    break;
+                case "(":
+                    stack.push(in.get(i));
+                    break;
+                default:
+                    post.add(in.get(i));
+            }
+        }
+        while (!stack.isEmpty()){
+            post.add(stack.pop());
+        }
+        return post;
+    }
+
+    public static double calculateExp(String expression) {
+        List<String> post=inToPostOrder(expression);
+        ArrayDeque<String> stack=new ArrayDeque<>();
+        for (int i=0;i<post.size();i++){
+            switch (post.get(i)){
+                case "+":
+                    Double temp=Double.parseDouble(stack.pop())+Double.parseDouble(stack.pop());
+                    stack.push(Double.toString(temp));
+                    break;
+                case "-":
+                    Double temp0=-Double.parseDouble(stack.pop())+Double.parseDouble(stack.pop());
+                    stack.push(Double.toString(temp0));
+                    break;
+                case "*":
+                    Double temp1=Double.parseDouble(stack.pop())*Double.parseDouble(stack.pop());
+                    stack.push(Double.toString(temp1));
+                    break;
+                case "/":
+                    Double part=Double.parseDouble(stack.pop());
+                    Double temp2=Double.parseDouble(stack.pop())/part;
+                    stack.push(Double.toString(temp2));
+                    break;
+                default:
+                    stack.push(post.get(i));
+            }
+        }
+        return Double.parseDouble(stack.pop());
+    }
 
     public static void main(String[] args) {
         Algorithm algorithm = new Algorithm();
